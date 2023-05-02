@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  backend:
+    container_name: backend
+    build: .
+  web:
+    container_name: web
+    build: openresty
+    ports:
+      - "8001:8090"
+    volumes:
+      # Erforderlich, da der Container non-root läuft und Probleme mit Schreibberechtigungen hat
+      - ./empty/var/run:/var/run/openresty
+      - ./empty/usr/local:/usr/local/openresty/nginx/logs
+      - ./openresty/nginx.conf:/etc/nginx/conf.d/nginx.conf
+  sso:
+    image: quay.io/keycloak/keycloak:20.0.3
+    container_name: "sso"
+    volumes:
+      - ./keycloak/config/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keycloak/realms:/opt/keycloak/data/import
+    command:
+      - start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=changeme
+      - PROXY_ADDRESS_FORWARDING=true
+      - VIRTUAL_HOST=demo-oidc.localhost
+      - VIRTUAL_PORT=8080
+    ports:
+      - "9001:8080"
+
+
