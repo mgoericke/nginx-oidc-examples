@@ -9,6 +9,7 @@
 <body>
 
 <div class="container">
+
     <div class="jumbotron">
         <h1>Geschützte Seite</h1>
         <h2>Empfangene Header</h2>
@@ -28,6 +29,25 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="jumbotron">
+        <h2>Abgerufene Nutzer-Attribute</h2>
+    </div>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userAttribute: ${userAttributes}">
+            <td th:text="${userAttribute.key}" />
+            <td th:text="${userAttribute.value}" />
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 
 </body>
