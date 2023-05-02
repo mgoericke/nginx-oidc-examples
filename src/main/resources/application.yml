@@ -1,0 +1,10 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaque:
+          # local development
+          # introspection-uri: http://localhost:9001/realms/demo-oidc/protocol/openid-connect/token/introspect
+          introspection-uri: http://sso:8080/realms/demo-oidc/protocol/openid-connect/token/introspect
+          introspection-client-id: web
+          introspection-client-secret: LZV5XQqP5PLG3QuaVhU72PsgHE7oGITH
