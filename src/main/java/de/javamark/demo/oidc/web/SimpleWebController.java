@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Controller
 public class SimpleWebController {
-    private static final Logger log = LoggerFactory.getLogger(SimpleWebController.class);
 
     @GetMapping(value = "/example",
             produces = MediaType.TEXT_HTML_VALUE)
