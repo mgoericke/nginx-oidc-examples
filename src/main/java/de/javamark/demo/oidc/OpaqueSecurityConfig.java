@@ -1,4 +1,4 @@
-package de.init.oidc.demo;
+package de.javamark.demo.oidc;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
