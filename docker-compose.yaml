@@ -14,7 +14,7 @@ services:
       - ./empty/usr/local:/usr/local/openresty/nginx/logs
       - ./openresty/nginx.conf:/etc/nginx/conf.d/nginx.conf
   sso:
-    image: quay.io/keycloak/keycloak:20.0.3
+    image: quay.io/keycloak/keycloak:latest
     container_name: "sso"
     volumes:
       - ./keycloak/config/keycloak.conf:/opt/keycloak/conf/keycloak.conf
@@ -29,5 +29,22 @@ services:
       - VIRTUAL_PORT=8080
     ports:
       - "9001:8080"
+  samlidp:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: "demo-samlidp.external"
+    volumes:
+      - ./saml/config/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      - ./saml/realms:/opt/keycloak/data/import
+    command:
+      - start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=changeme
+      - PROXY_ADDRESS_FORWARDING=true
+      - VIRTUAL_HOST=demo-samlidp.external
+      - VIRTUAL_PORT=10001
+      - KC_HTTP_PORT=10001
+    ports:
+      - "10001:10001"
 
 

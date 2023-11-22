@@ -80,3 +80,34 @@ spring:
 ```shell
 docker compose up web sso
 ```
+
+## SAML
+20.11.2023
+
+Einführung eines weiteren Keycloak (siehe: docker compose "samlidp)", der als SAML2.0 Identity Provider (IdP) vorkonfiguriert und im vorhandenen Keycloak eingebunden ist.  
+
+* Eintragen des Hosts "demo-samlidp.external" in die Hosts Datei
+* Admin UI ist unter http://demo-samlidp.external:10001 erreichbar
+* Admin Login: admin/changeme
+* Realm: saml-idp
+
+Für diesen IdP Keycloak ist ein einzelner Benutzer konfiguriert. Der Benutzer kann sich über den Button "SAML IdP" im Keycloak Anmeldeformular anmelden.
+
+* Benutzername: max
+* Kennwort: changeme
+
+Nach erfolgreicher Anmeldung leitet der IdP Keycloak auf den als Broker laufenden Keycloak (siehe: docker compose "sso") zurück, dort wird der Benutzer mapped und in der Keycloak Datenbank angelegt.
+Anschliessend erfolgt ein Redirect zur Anwendung: http://demo-oidc.localhost:8001/example
+
+Im Admin UI des Keycloak (siehe: docker compose "sso") kann geprüft werden, ob der Benutzer im Broker angelegt und ein Link zum Identity Provider hergestellt wurde
+
+
+## Export Realm Resources
+
+Realms, einschliesslich Benutzern, können folgendermassen exportiert werden (zuvor natürlich erst einen Terminal in den Container aufmachen :). 
+Anschliessend liegen die JSON Dateien der Realms unter keycloak/realms/export bzw. saml/realms/export.
+
+```shell
+cd /opt/keycloak
+./bin/kc.sh export --dir /opt/keycloak/data/import/export --users realm_file
+```
